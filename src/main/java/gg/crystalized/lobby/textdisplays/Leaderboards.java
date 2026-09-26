@@ -36,12 +36,16 @@ public class Leaderboards {
 		user.sendPacket(entity);
 	}
 
-	static WrapperPlayServerEntityMetadata displayMetadata(int entityId, Component text) {
-		List<EntityData<?>> data = List.of(new EntityData<>(15, EntityDataTypes.BYTE, (byte) 3),
+	static final int BILLBOARD_FIXED = 0;
+	static final int BILLBOARD_VERTICAL = 1;
+
+	static WrapperPlayServerEntityMetadata displayMetadata(int entityId, Component text, int billboardMode) {
+		List<EntityData<?>> metadataEntries = List.of(new EntityData<>(15, EntityDataTypes.BYTE, (byte) billboardMode),
 				new EntityData<Component>(23, EntityDataTypes.ADV_COMPONENT, text),
+				new EntityData<Integer>(24, EntityDataTypes.INT, 240),
 				new EntityData<Integer>(25, EntityDataTypes.INT, 1345466930),
 				new EntityData<Byte>(27, EntityDataTypes.BYTE, (byte) 1));
-		return new WrapperPlayServerEntityMetadata(entityId, data);
+		return new WrapperPlayServerEntityMetadata(entityId, metadataEntries);
 	}
 
 	public static final String LS_URL = "jdbc:sqlite:" + LobbyDatabase.dbDir() + "/litestrike_db.sql";
@@ -108,6 +112,16 @@ public class Leaderboards {
 		int sum = 0;
 		for (char c : chars) {
 			sum += BitmapGlyphInfo.getBitmapGlyphInfo(c).width;
+		}
+		sum += name.length() - 1;
+		return sum / 2;
+	}
+
+	public static int balanceBold(String name) {
+		char[] chars = name.toCharArray();
+		int sum = 0;
+		for (char c : chars) {
+			sum += BitmapGlyphInfo.getBitmapGlyphInfo(c).width + 1;
 		}
 		sum += name.length() - 1;
 		return sum / 2;

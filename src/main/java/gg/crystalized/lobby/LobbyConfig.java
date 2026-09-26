@@ -302,6 +302,7 @@ class NPCData{
             profile.name(name);
             npc.setProfile(profile.build());
             npc.customName(Component.text(name));
+            npc.setCustomNameVisible(true);
 
             /*
             NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name, loc);
@@ -309,7 +310,9 @@ class NPCData{
             trait.setSkinPersistent(skinName, skinSignature, skinValue);
             npc.spawn(loc);
              */
-        }catch(IllegalArgumentException e){}
+        }catch(IllegalArgumentException e){
+            Bukkit.getLogger().log(Level.SEVERE, "[Lobby_plugin] Failed to spawn NPC name=" + name + " skin=" + skin + " loc=" + loc, e);
+        }
     }
 
     public static ArrayList<String> deleteRest(ArrayList<String> map, String key){
