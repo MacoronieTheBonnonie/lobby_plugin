@@ -25,19 +25,13 @@ public class LevelManager implements Listener {
 
     public static void giveExperience(Player p, int exp){
         p.giveExp(exp);
-        try{
-            Properties sqlprop = new Properties();
-            sqlprop.put("transaction_mode", "IMMEDIATE");
-            Connection conn = DriverManager.getConnection(LobbyDatabase.URL, sqlprop);
-            conn.setAutoCommit(false);
-            String insertData = "UPDATE LobbyPlayers SET exp_to_next_lvl = ?, level = ? WHERE player_uuid = ?";
+        try(Connection conn = DriverManager.getConnection(LobbyDatabase.URL)){
+            String insertData = "UPDATE LobbyPlayers SET exp_to_next_lvl = ?, level = ? WHERE player_uuid = ?;";
             PreparedStatement prep = conn.prepareStatement(insertData);
             prep.setFloat(1, p.getExp());
             prep.setInt(2, p.getLevel());
             prep.setBytes(3, LobbyDatabase.uuid_to_bytes(p));
             prep.executeUpdate();
-            conn.commit();
-            conn.close();
         }catch(SQLException e){
             Bukkit.getLogger().warning(e.getMessage());
             Bukkit.getLogger().warning("Couldn't update xp or level of " + p.getName());
@@ -106,7 +100,7 @@ public class LevelManager implements Listener {
             sqlprop.put("transaction_mode", "IMMEDIATE");
             Connection conn = DriverManager.getConnection(LobbyDatabase.URL, sqlprop);
             conn.setAutoCommit(false);
-            String insertData = "UPDATE LobbyPlayers SET money = ? WHERE player_uuid = ?";
+            String insertData = "UPDATE LobbyPlayers SET money = ? WHERE player_uuid = ?;";
             PreparedStatement prep = conn.prepareStatement(insertData);
             int newMoney = getMoney(p) + amount;
             prep.setInt(1, newMoney);

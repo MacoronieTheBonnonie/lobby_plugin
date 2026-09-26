@@ -74,6 +74,7 @@ public class Nametag {
     }
 
     public void renderNametag(Player recipient){
+        Bukkit.getLogger().warning("rendering");
         for(int i = 0; i < components.length; i++){
             makeDisplay(true, recipient, i);
             makeArmorStand(true, recipient, i);
@@ -195,7 +196,7 @@ public class Nametag {
                 tag.renderNametag(hold);
                 continue;
             }
-            if(tooFarAway.contains(tag) && hold.canSee(p) && p.isOnline() && !p.isInvisible() && p.getGameMode() != GameMode.SPECTATOR) continue;
+            if(tooFarAway.contains(tag)) continue;
             tooFarAway.add(tag);
             User user = PacketEvents.getAPI().getPlayerManager().getUser(holder);
             for(int id :  ArrayUtils.addAll(tag.armorIds, tag.displayIds)) {

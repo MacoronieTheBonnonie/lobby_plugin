@@ -30,7 +30,7 @@ public class LobbyDatabase {
     String createLobbyPlayerTable = "CREATE TABLE IF NOT EXISTS LobbyPlayers ("
             + "player_uuid 			BLOB UNIQUE,"
             + "player_name 			STRING,"
-            + "exp_to_next_lvl       INTEGER,"
+            + "exp_to_next_lvl       REAL,"
             + "level 	INTEGER,"
             + "money     INTEGER,"
             + "online     INTEGER,"
