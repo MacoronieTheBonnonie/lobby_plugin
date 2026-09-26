@@ -74,7 +74,6 @@ public class Nametag {
     }
 
     public void renderNametag(Player recipient){
-        Bukkit.getLogger().warning("rendering");
         for(int i = 0; i < components.length; i++){
             makeDisplay(true, recipient, i);
             makeArmorStand(true, recipient, i);
